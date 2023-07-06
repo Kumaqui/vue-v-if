@@ -1,0 +1,44 @@
+#app 
+  h1 使用vue.js / v-if
+  h3 排行榜資料轉html
+    span 
+      img.bkl_icon(src="https://jci.book.com.tw/img/logo/books_logo_04.svg")
+      a(href="https://www.books.com.tw/?loc=tw_logo_001", target="_blank") (連結網址)
+
+  br
+
+  label 書品詳細資訊 : 
+    input(type="checkbox", v-model="mode_detail")
+  br
+  label 優惠價 :
+  span(v-for="(id,book) in books")
+    label {{id+1}}
+    input(type="checkbox", v-model="book.is_discount")
+  br
+  label 小圖呈現
+    input(type="radio" v-model="mode_size" value="small")
+  label 大圖呈現
+    input(type="radio" v-model="mode_size" value="big")
+    
+  br
+
+  .book(v-for="book in books" class="{{mode_detail?'detail':''}} {{ mode_size }}")
+    img(src="{{ book.img }}")
+    .infos
+      h2.name(v-if="!mode_detail") 
+        a(href="{{ book.link_book }}", target="_blank") {{ book.name.substring(0, 18) }}
+      h2.name(v-if="mode_detail")
+        a(href="{{ book.link_book }}", target="_blank") {{ book.name }}
+      
+      h4.author 作者:
+        a(href="{{ book.link_author }}", target="_blank") {{ book.author }}
+      h4.publish(v-if="mode_detail") 出版社: {{ book.publish_house }}
+      h4.price(v-if="book.is_discount") 優惠價:
+        span.red {{ book.discount * 100 }}
+        span 折
+        span.red {{ parseInt(book.price * book.discount) }}
+        span 元
+      h4.price(v-if="!book.is_discount") 價錢:
+        span.red {{ book.price }}
+        span 元
+      h4.publish(v-if="mode_detail") 出版日期 {{book.date}}
