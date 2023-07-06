@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - 使用vue.js / v-if</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="app"> 
+  <h1>使用vue.js / v-if</h1>
+  <h3>排行榜資料轉html<span> <img class="bkl_icon" src="https://jci.book.com.tw/img/logo/books_logo_04.svg"/><a href="https://www.books.com.tw/?loc=tw_logo_001" target="_blank">(連結網址)</a></span></h3><br/>
+  <label>書品詳細資訊 : 
+    <input type="checkbox" v-model="mode_detail"/>
+  </label><br/>
+  <label>優惠價 :</label><span v-for="(id,book) in books">
+    <label>{{id+1}}</label>
+    <input type="checkbox" v-model="book.is_discount"/></span><br/>
+  <label>小圖呈現
+    <input type="radio" v-model="mode_size" value="small"/>
+  </label>
+  <label>大圖呈現
+    <input type="radio" v-model="mode_size" value="big"/>
+  </label><br/>
+  <div class="book {{mode_detail?'detail':''}} {{ mode_size }}" v-for="book in books"><img src="{{ book.img }}"/>
+    <div class="infos">
+      <h2 class="name" v-if="!mode_detail"> <a href="{{ book.link_book }}" target="_blank">{{ book.name.substring(0, 18) }}</a></h2>
+      <h2 class="name" v-if="mode_detail"><a href="{{ book.link_book }}" target="_blank">{{ book.name }}</a></h2>
+      <h4 class="author">作者:<a href="{{ book.link_author }}" target="_blank">{{ book.author }}</a></h4>
+      <h4 class="publish" v-if="mode_detail">出版社: {{ book.publish_house }}</h4>
+      <h4 class="price" v-if="book.is_discount">優惠價:<span class="red">{{ book.discount * 100 }}</span><span>折</span><span class="red">{{ parseInt(book.price * book.discount) }}</span><span>元</span></h4>
+      <h4 class="price" v-if="!book.is_discount">價錢:<span class="red">{{ book.price }}</span><span>元</span></h4>
+      <h4 class="publish" v-if="mode_detail">出版日期 {{book.date}}</h4>
+    </div>
+  </div>
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.28/vue.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
